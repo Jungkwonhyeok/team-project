@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     public Scanner Scanner;
 
-    private Vector2 lastDir = Vector2.down; 
+    public Vector2 lastDir = Vector2.down; 
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -24,7 +24,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+        if (!GameManager.instance.isLive)
+            return;
+
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
@@ -34,7 +36,7 @@ public class Player : MonoBehaviour
         if (inputVec != Vector2.zero)
             lastDir = GetEightDirection(inputVec);
 
-        // Animator 파라미터 전달
+       
         anim.SetFloat("MoveX", lastDir.x);
         anim.SetFloat("MoveY", lastDir.y);
         anim.SetFloat("Speed", inputVec.sqrMagnitude); 
@@ -42,7 +44,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+        if (!GameManager.instance.isLive)
+            return;
+
         Vector2 nextPos = rigid.position + inputVec * speed * Time.fixedDeltaTime;
         rigid.MovePosition(nextPos);
     }
@@ -62,5 +66,24 @@ public class Player : MonoBehaviour
         if (angle >= -180f && angle < -157.5f || angle >= 157.5f && angle <= 180f) return new Vector2(-1, 0);
 
         return dir.normalized;
+    }
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!GameManager.instance.isLive)
+            return;
+
+        GameManager.instance.health -= Time.deltaTime * 10;
+
+        if(GameManager.instance.health < 0)
+        {
+            GameManager.instance.isLive = false;
+
+            for (int index=2; index < transform.childCount; index++)
+            {
+                transform.GetChild(index).gameObject.SetActive(false);
+            }
+
+            anim.SetTrigger("die");
+        }
     }
 }
