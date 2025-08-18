@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -19,7 +20,13 @@ public class GameManager : MonoBehaviour
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
-    
+    [Header("# Boss")]
+    public GameObject bossPrefab;   // Boss 프리팹
+    public Transform bossSpawnPos;  // 보스 등장 위치
+    private bool bossSpawned = false;
+    public float bossAppearTime = 60f; // 게임 시작 후 60초에 보스 등장
+
+
     void Awake()
     {
         instance = this;
@@ -40,7 +47,16 @@ public class GameManager : MonoBehaviour
         {
             gameTime = maxGameTime;
         }
+
+            // 보스 등장 체크
+        if (!bossSpawned && gameTime >= bossAppearTime)
+        {
+             SpawnBoss();
+             bossSpawned = true;
+        }
     }
+
+    
 
     public void GetExp()
     {
@@ -63,5 +79,17 @@ public class GameManager : MonoBehaviour
     {
         isLive = true;
         Time.timeScale = 1;
+    }
+
+    public void SpawnBoss()
+    {
+        if (bossPrefab != null && bossSpawnPos != null)
+        {
+            GameObject boss = Instantiate(bossPrefab, bossSpawnPos.position, Quaternion.identity);
+            // 필요하면 BossController의 player 필드도 자동 연결
+            BossController bc = boss.GetComponent<BossController>();
+            if (bc != null)
+                bc.player = player.transform;
+        }
     }
 }
