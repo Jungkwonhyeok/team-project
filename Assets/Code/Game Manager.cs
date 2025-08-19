@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         health = maxhealth;
+        isLive = true; // UI에서 따로 Resume 누르기 전에도 돌도록
     }
     void Update()
     {

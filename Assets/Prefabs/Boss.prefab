@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4474825333869114438}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -105,9 +105,10 @@ GameObject:
   - component: {fileID: 9137487331623624515}
   - component: {fileID: 3749542578413823980}
   - component: {fileID: 8740173841906825568}
+  - component: {fileID: 2535378001191232227}
   m_Layer: 6
   m_Name: Boss
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -227,7 +228,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &8740173841906825568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,14 +241,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f29e59a96ed09f478662d1b81c1969a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 3807640620545046061, guid: 41c35b962f5dc064cb0f2f2f9cd12cd8, type: 3}
   anim: {fileID: 9137487331623624515}
   meleeHitboxGO: {fileID: 4474825333869114438}
   maxHP: 100
   currentHP: 100
   attackCooldown: 1.2
   meleeDamage: 15
+  moveSpeed: 2
+  attackRange: 1
   isPhase2: 0
   lightningInterval: 3
-  warningPrefab: {fileID: 4791097290105223652, guid: 0732e6d4a91fe444da191b2483ea2a17, type: 3}
+  warningPrefab: {fileID: 1645395652932080355, guid: 1cd03d6ce5fa8324fa9e4d685a78afd7, type: 3}
   warningOffsetY: 0
+  maxHealth: 200
+--- !u!61 &2535378001191232227
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388938764960701499}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 7.5, y: 7.5}
+    newSize: {x: 7.5, y: 7.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 3}
+  m_EdgeRadius: 0

@@ -28,12 +28,14 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || per == -1)
+        if (per == -1) return;
+
+        // Enemy 또는 Boss에만 피어싱 소모
+        if (!(collision.CompareTag("Enemy") || collision.CompareTag("Boss")))
             return;
 
         per--;
-
-        if (per == -1) 
+        if (per == -1)
         {
             rigid.velocity = Vector2.zero;
             gameObject.SetActive(false);
