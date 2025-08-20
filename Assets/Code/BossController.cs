@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 public class BossController : MonoBehaviour
@@ -22,26 +22,20 @@ public class BossController : MonoBehaviour
     [Header("Phase2 (<=50%)")]
     public bool isPhase2 = false;
     public float lightningInterval = 3f;
-    public GameObject warningPrefab;
+    public GameObject warningPrefab;      // 경고 이펙트
+    public GameObject lightningPrefab;    // 실제 낙뢰 이펙트
     public float warningOffsetY = 0f;
 
     bool aiRunning = false;
     bool dead = false;
     Rigidbody2D rb;
 
-    public int maxHealth = 200;
-    int curHealth;
-    
-
     void Awake()
     {
-        if (!anim) anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         if (meleeHitboxGO) meleeHitboxGO.SetActive(false);
-        currentHP = Mathf.Clamp(currentHP, 1, maxHP);
-
-        curHealth = maxHealth;
-        anim = GetComponent<Animator>();
+        currentHP = maxHP;
     }
 
     void OnEnable()
@@ -53,20 +47,18 @@ public class BossController : MonoBehaviour
     {
         if (dead || player == null || !GameManager.instance.isLive) return;
 
-        // 간단 추적: 사정거리 밖이면 접근
         float dist = Vector2.Distance(rb.position, (Vector2)player.position);
         if (dist > attackRange)
         {
             Vector2 dir = ((Vector2)player.position - rb.position).normalized;
             rb.MovePosition(rb.position + dir * moveSpeed * Time.fixedDeltaTime);
-            if (anim) anim.SetBool("Walk", true);
+            anim.SetBool("Walk", true);
         }
         else
         {
-            if (anim) anim.SetBool("Walk", false);
+            anim.SetBool("Walk", false);
         }
 
-        // 좌우 반전 (스프라이트라면)
         var sr = GetComponent<SpriteRenderer>();
         if (sr) sr.flipX = player.position.x < transform.position.x;
     }
@@ -89,21 +81,20 @@ public class BossController : MonoBehaviour
     void EnterPhase2()
     {
         isPhase2 = true;
-        
         StartCoroutine(LightningRoutine());
     }
 
     IEnumerator MeleeOnce()
     {
-        if (anim) anim.SetTrigger("Attack");
+        anim.SetTrigger("Attack");
         yield return new WaitForSeconds(1.0f);
     }
 
     IEnumerator MeleeCombo2()
     {
-        if (anim) anim.SetTrigger("Attack");
+        anim.SetTrigger("Attack");
         yield return new WaitForSeconds(0.9f);
-        if (anim) anim.SetTrigger("Attack");
+        anim.SetTrigger("Attack");
         yield return new WaitForSeconds(0.9f);
     }
 
@@ -120,8 +111,11 @@ public class BossController : MonoBehaviour
         }
     }
 
+    // --- Animation Events ---
     public void AE_MeleeOn() { if (meleeHitboxGO) meleeHitboxGO.SetActive(true); }
     public void AE_MeleeOff() { if (meleeHitboxGO) meleeHitboxGO.SetActive(false); }
+
+    // 낙뢰 경고 (애니메이션 이벤트에서 호출할 수 있음)
     public void AE_FireLightning()
     {
         if (player && warningPrefab)
@@ -131,70 +125,59 @@ public class BossController : MonoBehaviour
         }
     }
 
+    // 실제 낙뢰 소환
+    public void CastLightning()
+    {
+        if (lightningPrefab == null || player == null) return;
+
+        Vector3 spawnPos = player.position;
+        spawnPos.y += warningOffsetY;
+
+        Instantiate(lightningPrefab, spawnPos, Quaternion.identity);
+    }
+
+    // --- Damage & Death ---
     public void TakeDamage(int amount)
     {
         if (dead) return;
+
         currentHP -= amount;
         if (currentHP <= 0)
         {
-            dead = true;
-            StopAllCoroutines();
-            if (meleeHitboxGO) meleeHitboxGO.SetActive(false);
-            if (anim) anim.SetBool("die", true); // 있으면
-            Destroy(gameObject, 1.5f);
+            Die();
         }
         else
         {
-            if (anim) anim.SetTrigger("Hit"); // 히트 클립 있으면
-        }
-    }
-
-    public void OnHit(int damage)
-    {
-        if (curHealth <= 0) return;
-
-        curHealth -= damage;
-        anim.SetTrigger("Hit"); // 맞는 모션 실행
-
-        if (curHealth <= 0)
-        {
-            Die();
+            anim.SetTrigger("Hit");
         }
     }
 
     void Die()
     {
-        anim.SetTrigger("Die"); // 죽는 모션 실행
-        GetComponent<Collider2D>().enabled = false; // 더이상 안 맞게
-        // 필요하면 스폰 멈추거나 게임 승리 처리
+        dead = true;
+        StopAllCoroutines();
+        if (meleeHitboxGO) meleeHitboxGO.SetActive(false);
+
+        anim.SetBool("die", true);
+        GetComponent<Collider2D>().enabled = false;
+
+        Invoke(nameof(DisableBoss), 1.5f);
     }
 
-    void Update()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (dead) return;
+        if (!collision.CompareTag("Bullet") || dead) return;
 
-        float distance = Vector2.Distance(transform.position, player.position);
-
-        if (distance <= attackRange)
+        Bullet bullet = collision.GetComponent<Bullet>();
+        if (bullet != null)
         {
-            // 이동 멈추고 공격
-            anim.SetBool("isWalking", false);
-            Attack();
-        }
-        else
-        {
-            // 플레이어 추적
-            anim.SetBool("isWalking", true);
-            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+            TakeDamage((int)bullet.damage);
+            
         }
     }
 
-    void Attack()
+    void DisableBoss()
     {
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack")) // 중복 방지
-        {
-            anim.SetTrigger("Attack");
-        }
+        gameObject.SetActive(false); // 풀에 돌려보냄
     }
-
 }

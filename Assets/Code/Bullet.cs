@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class Bullet : MonoBehaviour
 {
     public float damage;
-    public int per;
+    public int per; // 관통 횟수
 
     Rigidbody2D rigid;
 
@@ -30,15 +27,25 @@ public class Bullet : MonoBehaviour
     {
         if (per == -1) return;
 
-        // Enemy 또는 Boss에만 피어싱 소모
-        if (!(collision.CompareTag("Enemy") || collision.CompareTag("Boss")))
-            return;
-
-        per--;
-        if (per == -1)
+        if (collision.CompareTag("Enemy"))
         {
-            rigid.velocity = Vector2.zero;
-            gameObject.SetActive(false);
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null) enemy.health -= damage;
+        }
+        else if (collision.CompareTag("Boss"))
+        {
+            BossController boss = collision.GetComponent<BossController>();
+            if (boss != null) boss.TakeDamage((int)damage);
+        }
+
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
+        {
+            per--;
+            if (per == -1)
+            {
+                rigid.velocity = Vector2.zero;
+                gameObject.SetActive(false);
+            }
         }
     }
 }

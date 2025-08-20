@@ -169,7 +169,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: -302987367, guid: a2508d3061c3f0b4f90857c3243b3dcf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -253,8 +253,8 @@ MonoBehaviour:
   isPhase2: 0
   lightningInterval: 3
   warningPrefab: {fileID: 1645395652932080355, guid: 1cd03d6ce5fa8324fa9e4d685a78afd7, type: 3}
+  lightningPrefab: {fileID: 8287257586853675103, guid: da5a2e68aae0f4b429880d153c33b9c0, type: 3}
   warningOffsetY: 0
-  maxHealth: 200
 --- !u!61 &2535378001191232227
 BoxCollider2D:
   m_ObjectHideFlags: 0
