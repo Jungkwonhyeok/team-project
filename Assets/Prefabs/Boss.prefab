@@ -169,7 +169,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 3
   m_Sprite: {fileID: -302987367, guid: a2508d3061c3f0b4f90857c3243b3dcf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -244,8 +244,8 @@ MonoBehaviour:
   player: {fileID: 3807640620545046061, guid: 41c35b962f5dc064cb0f2f2f9cd12cd8, type: 3}
   anim: {fileID: 9137487331623624515}
   meleeHitboxGO: {fileID: 4474825333869114438}
-  maxHP: 100
-  currentHP: 100
+  maxHP: 500
+  currentHP: 500
   attackCooldown: 1.2
   meleeDamage: 15
   moveSpeed: 2
