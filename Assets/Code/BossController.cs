@@ -10,10 +10,10 @@ public class BossController : MonoBehaviour
     public GameObject meleeHitboxGO;
 
     [Header("Stats")]
-    public int maxHP = 100;
-    public int currentHP = 100;
+    public int maxHP = 500;
+    public int currentHP = 500;
     public float attackCooldown = 1.2f;
-    public int meleeDamage = 15;
+    public int meleeDamage = 20;
 
     [Header("Movement")]
     public float moveSpeed = 2f;
@@ -21,7 +21,7 @@ public class BossController : MonoBehaviour
 
     [Header("Phase2 (<=50%)")]
     public bool isPhase2 = false;
-    public float lightningInterval = 3f;
+    public float lightningInterval = 1f;
     public GameObject warningPrefab;      // °æ°í ÀÌÆåÆ®
     public GameObject lightningPrefab;    // ½ÇÁ¦ ³«·Ú ÀÌÆåÆ®
     public float warningOffsetY = 0f;
@@ -52,11 +52,7 @@ public class BossController : MonoBehaviour
         {
             Vector2 dir = ((Vector2)player.position - rb.position).normalized;
             rb.MovePosition(rb.position + dir * moveSpeed * Time.fixedDeltaTime);
-            anim.SetBool("Walk", true);
-        }
-        else
-        {
-            anim.SetBool("Walk", false);
+            
         }
 
         var sr = GetComponent<SpriteRenderer>();
@@ -115,16 +111,7 @@ public class BossController : MonoBehaviour
     public void AE_MeleeOn() { if (meleeHitboxGO) meleeHitboxGO.SetActive(true); }
     public void AE_MeleeOff() { if (meleeHitboxGO) meleeHitboxGO.SetActive(false); }
 
-    // ³«·Ú °æ°í (¾Ö´Ï¸ÞÀÌ¼Ç ÀÌº¥Æ®¿¡¼­ È£ÃâÇÒ ¼ö ÀÖÀ½)
-    public void AE_FireLightning()
-    {
-        if (player && warningPrefab)
-        {
-            Vector3 pos = player.position; pos.y += warningOffsetY;
-            Instantiate(warningPrefab, pos, Quaternion.identity);
-        }
-    }
-
+   
     // ½ÇÁ¦ ³«·Ú ¼ÒÈ¯
     public void CastLightning()
     {

@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16642283c40774e4780490dcbf8a94d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
+  damage: 20
   targetTag: Player
 --- !u!1 &7388938764960701499
 GameObject:
@@ -247,11 +247,11 @@ MonoBehaviour:
   maxHP: 500
   currentHP: 500
   attackCooldown: 1.2
-  meleeDamage: 15
+  meleeDamage: 20
   moveSpeed: 2
   attackRange: 1
   isPhase2: 0
-  lightningInterval: 3
+  lightningInterval: 1
   warningPrefab: {fileID: 1645395652932080355, guid: 1cd03d6ce5fa8324fa9e4d685a78afd7, type: 3}
   lightningPrefab: {fileID: 8287257586853675103, guid: da5a2e68aae0f4b429880d153c33b9c0, type: 3}
   warningOffsetY: 0

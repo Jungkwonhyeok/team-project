@@ -3,8 +3,8 @@ using UnityEngine;
 public class WarningZone : MonoBehaviour
 {
     public GameObject lightningPrefab; // Lightning ÇÁ¸®ÆÕ
-    public float delay = 0.8f;         // °æ°í ÈÄ ³«·Ú±îÁö Áö¿¬
-    public int damage = 20;            // ³«·Ú µ¥¹ÌÁö (Lightning¿¡ ³Ñ±è)
+    public float delay = 0.5f;         // °æ°í ÈÄ ³«·Ú±îÁö Áö¿¬
+    public int damage = 50;            // ³«·Ú µ¥¹ÌÁö (Lightning¿¡ ³Ñ±è)
 
     void Start()
     {

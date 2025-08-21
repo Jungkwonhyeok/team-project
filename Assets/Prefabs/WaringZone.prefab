@@ -98,5 +98,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightningPrefab: {fileID: 8287257586853675103, guid: da5a2e68aae0f4b429880d153c33b9c0, type: 3}
-  delay: 0.7
-  damage: 20
+  delay: 0.5
+  damage: 50

@@ -305,7 +305,7 @@ MonoBehaviour:
   player: {fileID: 1848264099}
   bossPrefab: {fileID: 7388938764960701499, guid: 27279e55e1ecde74085179c3fe126b5c, type: 3}
   bossSpawnPos: {fileID: 1658313318}
-  bossAppearTime: 60
+  bossAppearTime: 5
 --- !u!4 &12482234
 Transform:
   m_ObjectHideFlags: 0

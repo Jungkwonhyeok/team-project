@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Lightning : MonoBehaviour
 {
-    public int damage = 20;
+    public int damage = 50;
     public float lifeTime = 0.8f;
     public string targetTag = "Player"; // 플레이어만 타격
 

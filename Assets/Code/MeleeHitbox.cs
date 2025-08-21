@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MeleeHitbox : MonoBehaviour
 {
-    public int damage = 15;
+    public int damage = 20;
     public string targetTag = "Player"; // 플레이어만 타격
 
     void OnTriggerEnter2D(Collider2D other)
