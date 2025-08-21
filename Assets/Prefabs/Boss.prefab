@@ -248,6 +248,7 @@ MonoBehaviour:
   currentHP: 500
   attackCooldown: 1.2
   meleeDamage: 20
+  bossHUD: {fileID: 6677421938043700976, guid: 454d8913f96c9ee498242817abe52af4, type: 3}
   moveSpeed: 2
   attackRange: 1
   isPhase2: 0

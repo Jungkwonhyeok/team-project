@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class WarningZone : MonoBehaviour
 {
-    public GameObject lightningPrefab; // Lightning ÇÁ¸®ÆÕ
+    public GameObject lightningPrefab;
     public float delay = 0.5f;         // °æ°í ÈÄ ³«·Ú±îÁö Áö¿¬
-    public int damage = 50;            // ³«·Ú µ¥¹ÌÁö (Lightning¿¡ ³Ñ±è)
 
     void Start()
     {
@@ -13,12 +12,10 @@ public class WarningZone : MonoBehaviour
 
     void SpawnLightning()
     {
-        var go = Instantiate(lightningPrefab, transform.position, Quaternion.identity);
+        // ³«·Ú »ý¼º
+        Instantiate(lightningPrefab, transform.position, Quaternion.identity);
 
-        // ³«·Ú¿¡ µ¥¹ÌÁö ÆÄ¶ó¹ÌÅÍ Àü´Þ
-        var l = go.GetComponent<Lightning>();
-        if (l != null) l.damage = damage;
-
+        // WarningZone Á¦°Å
         Destroy(gameObject);
     }
 }

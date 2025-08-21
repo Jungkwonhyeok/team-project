@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class BossController : MonoBehaviour
 {
+    public static BossController instance;
     [Header("Refs")]
     public Transform player;
     public Animator anim;
@@ -14,6 +15,9 @@ public class BossController : MonoBehaviour
     public int currentHP = 500;
     public float attackCooldown = 1.2f;
     public int meleeDamage = 20;
+
+    [Header("UI")]
+    public GameObject bossHUD;
 
     [Header("Movement")]
     public float moveSpeed = 2f;
@@ -36,9 +40,15 @@ public class BossController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         if (meleeHitboxGO) meleeHitboxGO.SetActive(false);
         currentHP = maxHP;
+        instance = this;
     }
 
-    void OnEnable()
+    void Start()
+    {
+        if (bossHUD != null)
+            bossHUD.SetActive(true);
+    }
+        void OnEnable()
     {
         if (!aiRunning) StartCoroutine(AI());
     }
@@ -149,6 +159,10 @@ public class BossController : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
 
         Invoke(nameof(DisableBoss), 1.5f);
+
+        if (bossHUD != null)
+            bossHUD.SetActive(false); // 보스 죽으면 HP바 비활성화
+        Destroy(gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -165,6 +179,6 @@ public class BossController : MonoBehaviour
 
     void DisableBoss()
     {
-        gameObject.SetActive(false); // 풀에 돌려보냄
+        gameObject.SetActive(false);
     }
 }

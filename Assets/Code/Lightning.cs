@@ -15,7 +15,7 @@ public class Lightning : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        GameManager.instance.health -= damage;
+        GameManager.instance.health -= (float)damage;
         if (GameManager.instance.health <= 0)
         {
             GameManager.instance.health = 0;
