@@ -22,6 +22,13 @@ public class Lightning : MonoBehaviour
             GameManager.instance.isLive = false;
             other.GetComponent<Animator>().SetTrigger("die");
         }
+
+        foreach (Transform child in other.transform)
+        {
+            if (child.CompareTag("Area")) continue;
+
+            child.gameObject.SetActive(false);
+        }
     }
 
 }

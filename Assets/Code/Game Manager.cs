@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,11 +21,13 @@ public class GameManager : MonoBehaviour
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
+    public Result uiResult;
+    public GameObject enemyCLeaner;
     [Header("# Boss")]
     public GameObject bossPrefab;   // Boss 프리팹
     public Transform bossSpawnPos;  // 보스 등장 위치
     private bool bossSpawned = false;
-    public float bossAppearTime = 60f; // 게임 시작 후 60초에 보스 등장
+    public float bossAppearTime = 60f; // 게임 시작 후 ?초에 보스 등장
 
 
     void Awake()
@@ -32,11 +35,51 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
-    void Start()
+    public void GameStart()
     {
         health = maxhealth;
-        isLive = true; // UI에서 따로 Resume 누르기 전에도 돌도록
+        Resume();
     }
+
+    public void GameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        isLive = false;
+        enemyCLeaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.Lose();
+        Stop();
+    }
+
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine());
+    }
+
+    IEnumerator GameVictoryRoutine()
+    {
+        isLive = false;
+        enemyCLeaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.Win();
+        Stop();
+    }
+
+    public void GameRetry()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     void Update()
     {
         if (!isLive)
@@ -47,6 +90,7 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
+            GameVictory();
         }
 
             // 보스 등장 체크
@@ -61,6 +105,9 @@ public class GameManager : MonoBehaviour
 
     public void GetExp()
     {
+        if (!isLive)
+            return;
+
         exp++;
 
         if (exp == nextExp[level])
