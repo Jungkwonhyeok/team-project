@@ -14,8 +14,7 @@ public class MeleeHitbox : MonoBehaviour
         if (GameManager.instance.health <= 0)
         {
             GameManager.instance.health = 0;
-            GameManager.instance.isLive = false;
-            other.GetComponent<Animator>().SetTrigger("die");
+            GameManager.instance.PlayerDie();
         }
     }
 

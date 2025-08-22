@@ -15,19 +15,13 @@ public class Lightning : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        GameManager.instance.health -= (float)damage;
+        GameManager.instance.health -= damage;
         if (GameManager.instance.health <= 0)
         {
+
+            Debug.Log("¹ø°³¿¡ Á×À½");
             GameManager.instance.health = 0;
-            GameManager.instance.isLive = false;
-            other.GetComponent<Animator>().SetTrigger("die");
-        }
-
-        foreach (Transform child in other.transform)
-        {
-            if (child.CompareTag("Area")) continue;
-
-            child.gameObject.SetActive(false);
+            GameManager.instance.PlayerDie();
         }
     }
 

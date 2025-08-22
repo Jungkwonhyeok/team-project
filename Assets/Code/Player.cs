@@ -67,24 +67,5 @@ public class Player : MonoBehaviour
 
         return dir.normalized;
     }
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (!GameManager.instance.isLive)
-            return;
-
-        GameManager.instance.health -= Time.deltaTime * 10; //적과 충돌시 체력 감소
-
-        if(GameManager.instance.health < 0)
-        {
-            GameManager.instance.isLive = false; //게임 오버
-
-            for (int index=2; index < transform.childCount; index++)
-            {
-                transform.GetChild(index).gameObject.SetActive(false); //자식obj 비활성화
-            }
-
-            anim.SetTrigger("die");
-            GameManager.instance.GameOver();
-        }
-    }
+    
 }

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public bool isLive;
     public float gameTime;
     public float maxGameTime = 2 * 10f;
+    public bool isGaming = false;
     [Header("# Player Info")]
     public float health;
     public float maxhealth = 100;
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         health = maxhealth;
+        isGaming = true;
+        player.transform.GetChild(2).gameObject.SetActive(true);
         Resume();
     }
 
@@ -85,6 +88,7 @@ public class GameManager : MonoBehaviour
         if (!isLive)
             return;
 
+        if(isGaming)
         gameTime += Time.deltaTime;
 
         if (gameTime > maxGameTime)
@@ -128,6 +132,32 @@ public class GameManager : MonoBehaviour
         isLive = true;
         Time.timeScale = 1;
     }
+
+    public void PlayerDie()
+    {
+        if (!isLive) return;   // 이미 죽었으면 실행 안 함
+        isLive = false;
+
+        
+
+        // 플레이어 애니메이션 실행
+        player.GetComponent<Animator>().SetTrigger("die");
+
+        // 자식 오브젝트들 끄기 (무기, HUD 등)
+        
+        for(int i = 0; i < player.transform.childCount; i++)
+        {
+            if(i >= 2)
+            {
+                player.transform.GetChild(i).gameObject.SetActive(false);
+            }
+
+            GameManager.instance.GameOver();
+        }
+
+   
+    }
+
 
     public void SpawnBoss()
     {
