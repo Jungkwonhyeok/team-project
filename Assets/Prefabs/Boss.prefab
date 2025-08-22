@@ -214,7 +214,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -248,7 +248,6 @@ MonoBehaviour:
   currentHP: 500
   attackCooldown: 1.2
   meleeDamage: 20
-  bossHUD: {fileID: 6677421938043700976, guid: 454d8913f96c9ee498242817abe52af4, type: 3}
   moveSpeed: 2
   attackRange: 1
   isPhase2: 0
